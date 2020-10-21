@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Engine\Memory\Policy\NedAllocatePolicy.cpp" />
+    <ClCompile Include="source\Engine\Memory\Policy\NedPoolingAllocatePolicy.cpp" />
+    <ClCompile Include="source\Engine\Memory\Heap.cpp" />
+    <ClCompile Include="source\Engine\Memory\HeapFactory.cpp" />
+    <ClCompile Include="source\Engine\Memory\MemoryTracker.cpp" />
+    <ClCompile Include="source\Game\Game.cpp" />
+    <ClCompile Include="source\Game\GameDebug.cpp" />
+    <ClCompile Include="source\Game\MasterData\MasterData.cpp" />
+    <ClCompile Include="source\Game\Entities.cpp" />
+    <ClCompile Include="source\Game\MasterData\Parser\MasterParser_CSV.cpp" />
+    <ClCompile Include="source\Engine\Memory\STL\HeapMemory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Engine\Memory\Policy\NedAllocatePolicy.hpp" />
+    <ClInclude Include="source\Engine\Memory\Policy\NedPoolingAllocatePolicy.hpp" />
+    <ClInclude Include="source\Engine\Memory\Policy\StandardAllocatePolicy.hpp" />
+    <ClInclude Include="source\Engine\Memory\AlignedAllocator.hpp" />
+    <ClInclude Include="source\Engine\Memory\AllocateConfig.hpp" />
+    <ClInclude Include="source\Engine\Memory\Heap.hpp" />
+    <ClInclude Include="source\Engine\Memory\HeapFactory.hpp" />
+    <ClInclude Include="source\Engine\Memory\HeapWalk.hpp" />
+    <ClInclude Include="source\Engine\Memory\MemoryConfig.hpp" />
+    <ClInclude Include="source\Engine\Memory\MemoryManager.hpp" />
+    <ClInclude Include="source\Engine\Memory\MemoryTracker.hpp" />
+    <ClInclude Include="source\Engine\Types.hpp" />
+    <ClInclude Include="source\Engine\Memory\STL\SHeapAllocator.hpp" />
+    <ClInclude Include="source\Engine\Memory\STL\HeapString.hpp" />
+    <ClInclude Include="source\Engine\Memory\STL\HeapContainer.hpp" />
+    <ClInclude Include="source\Engine\STL.hpp" />
+    <ClInclude Include="source\Game\Game.hpp" />
+    <ClInclude Include="source\Game\Character.hpp" />
+    <ClInclude Include="source\Game\GameDebug.hpp" />
+    <ClInclude Include="source\Game\MasterData\MasterData.hpp" />
+    <ClInclude Include="source\Game\Entities.hpp" />
+    <ClInclude Include="source\Game\MasterData\Parser\IMasterParser.hpp" />
+    <ClInclude Include="source\Game\MasterData\Parser\MasterParser_CSV.hpp" />
+    <ClInclude Include="source\Engine\Memory\STL\HeapMemory.hpp" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+.vs/
+bin/
+obj/
+*.ipch
+*.db
+*.suo
+*.lastbuildstate
+*.tlog
+*.pdb
+*.log
+*.idb
+*.obj
+*.lib
+1st/x64/
