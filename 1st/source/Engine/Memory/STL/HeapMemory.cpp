@@ -1,7 +1,6 @@
 ﻿
 #include "HeapMemory.hpp"
 
-
 namespace NE
 {
 // Blob作成
@@ -10,12 +9,15 @@ UniqueBlob MakeUniqueBlob(SizeT bytes, Heap* pHeap)
 {
     Detail::CustomDeleter_Blob<NE::U8> deleter(pHeap);
 
-    auto GetHeap = [pHeap]() -> Heap* { return pHeap; };
+    auto GetHeap = [pHeap]()->Heap *
+    {
+        return pHeap;
+    };
 
     return UniqueBlob(reinterpret_cast<NE::U8*>(MEM_ALLOC_HEAP(bytes)),
                       deleter);
 }
-#else // !USE_HEAP_TRACKING
+#else  // !USE_HEAP_TRACKING
 UniqueBlob MakeUniqueBlob(SizeT bytes)
 {
     Detail::CustomDeleter_Blob<NE::U8> deleter();
@@ -25,4 +27,3 @@ UniqueBlob MakeUniqueBlob(SizeT bytes)
 }
 #endif // USE_HEAP_TRACKING
 }
-

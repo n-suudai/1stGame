@@ -3,7 +3,6 @@
 
 #include "../Types.hpp"
 
-
 namespace NE
 {
 

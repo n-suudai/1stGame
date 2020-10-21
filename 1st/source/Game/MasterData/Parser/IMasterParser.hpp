@@ -4,7 +4,6 @@
 #include "../../../Engine/Types.hpp"
 #include "../../../Engine/STL.hpp"
 
-
 class MasterTable;
 class IMasterParser : public MasterEntity
 {
@@ -13,4 +12,3 @@ public:
 
     virtual bool Free(MasterTable* pOwner) = 0;
 };
-

@@ -4,9 +4,7 @@
 #include "MasterData/MasterData.hpp"
 #include "MasterData/Parser/MasterParser_CSV.hpp"
 
-
-Game::Game(const char* title)
-    : m_title(title)
+Game::Game(const char* title) : m_title(title)
 {
     m_character = NE::MakeUnique<Character>();
 
@@ -14,9 +12,8 @@ Game::Game(const char* title)
     m_masterTable = NE::MakeUnique<MasterTable>("", parser);
 }
 
-Game ::~Game()
+Game::~Game()
 {
-
 }
 
 void Game::Run()
@@ -42,7 +39,7 @@ bool Game::Loop()
     else if (code == 2)
     {
         PrintDebug_Report_HeapTreeStats();
-        //PrintDebug_Report_MemoryAssertions();
+        // PrintDebug_Report_MemoryAssertions();
     }
     else if (code == 3)
     {
@@ -50,7 +47,8 @@ bool Game::Loop()
     }
     else if (code == 4)
     {
-        m_masterTable->ForEach([](const MasterRecord* p) {
+        m_masterTable->ForEach([](const MasterRecord* p)
+        {
             if (p->Get_U64("Age") >= 25)
             {
                 printf_s("%sは年寄りだ...\n", p->Get_String("Name").c_str());
@@ -60,6 +58,3 @@ bool Game::Loop()
 
     return false;
 }
-
-
-

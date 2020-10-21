@@ -83,5 +83,3 @@ template <typename T, typename Sequence = HeapDeque<T>>
 using Stack = HeapStack<T, Sequence>;
 
 } // namespace NE
-
-

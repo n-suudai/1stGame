@@ -58,11 +58,16 @@ struct CustomDeleter<T[]>
 template <typename T>
 struct CustomDeleter_Blob
 {
-    inline CustomDeleter_Blob(Heap *pHeap) : m_pHeap(pHeap) {}
+    inline CustomDeleter_Blob(Heap *pHeap) : m_pHeap(pHeap)
+    {
+    }
 
     inline CustomDeleter_Blob() = default;
 
-    inline Heap *GetHeap() const { return m_pHeap; }
+    inline Heap *GetHeap() const
+    {
+        return m_pHeap;
+    }
 
     template <typename T2,
               std::enable_if_t<std::is_convertible_v<T2 *, T *>, int> = 0>
@@ -79,7 +84,7 @@ struct CustomDeleter_Blob
 
     Heap *m_pHeap;
 };
-#else // !USE_HEAP_TRACKING
+#else  // !USE_HEAP_TRACKING
 template <typename T>
 struct CustomDeleter_Blob
 {
@@ -124,9 +129,9 @@ inline SharedPtr<T> MakeShared(Arguments &&... arguments)
     static STL::SHeapSharedAllocator<T> allocator =
       STL::SHeapSharedAllocator<T>(
 #if USE_HEAP_TRACKING
-          T::GetHeap()
+        T::GetHeap()
 #endif
-          );
+        );
     return std::allocate_shared<T, STL::SHeapSharedAllocator<T>>(
       allocator, std::forward<Arguments>(arguments)...);
 }
@@ -143,7 +148,7 @@ inline UniquePtr<T> MakeUnique(Arguments &&... arguments)
 
 template <
   typename T,
-  std::enable_if_t<std::is_array_v<T> && std::extent<T>::value == 0, int> = 0>
+  std::enable_if_t<std::is_array_v<T> &&std::extent<T>::value == 0, int> = 0>
 inline UniquePtr<T> MakeUnique(size_t size)
 {
     typedef std::remove_extent_t<T> Element;
@@ -156,7 +161,6 @@ inline UniquePtr<T> MakeUnique(size_t size)
 template <typename T, class... Arguments,
           std::enable_if_t<std::extent<T>::value != 0, int> = 0>
 void MakeUnique(Arguments &&...) = delete;
-
 
 // Blob作成
 #if USE_HEAP_TRACKING

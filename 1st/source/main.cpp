@@ -1,7 +1,6 @@
 ﻿#include "Game/GameDebug.hpp"
 #include "Game/Game.hpp"
 
-
 int main()
 {
     {

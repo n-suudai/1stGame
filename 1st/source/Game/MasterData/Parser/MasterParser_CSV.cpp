@@ -2,14 +2,12 @@
 #include "../MasterData.hpp"
 #include <array>
 
-
-MasterParser_CSV::MasterParser_CSV() {
-
+MasterParser_CSV::MasterParser_CSV()
+{
 }
 
-
-MasterParser_CSV::~MasterParser_CSV() {
-
+MasterParser_CSV::~MasterParser_CSV()
+{
 }
 
 bool MasterParser_CSV::Parse(const char*, MasterTable* pOwner)
@@ -23,26 +21,25 @@ bool MasterParser_CSV::Parse(const char*, MasterTable* pOwner)
     };
 
     std::array<DummyData, 3> dummies = {
-      DummyData{ 1000, "ボブ", 18, "人間" },
-      DummyData{ 1001, "アリス", 25, "魔女" },
-      DummyData{ 1003, "ドラゴ", 25, "ドラゴン" },
-    };
+      DummyData{1000, "ボブ", 18, "人間"},
+      DummyData{1001, "アリス", 25, "魔女"},
+      DummyData{1003, "ドラゴ", 25, "ドラゴン"}, };
 
     NE::SizeT offset = 0;
     NE::SizeT recordCount = dummies.size();
 
     MasterTable::ColumnDefineList columnDefines;
-    
-    columnDefines.insert({ "Id", { MasterValueType::U64, offset } });
+
+    columnDefines.insert({"Id", {MasterValueType::U64, offset}});
     offset += GetValueSize(MasterValueType::U64);
-    
-    columnDefines.insert({ "Name", { MasterValueType::String, offset } });
+
+    columnDefines.insert({"Name", {MasterValueType::String, offset}});
     offset += GetValueSize(MasterValueType::String);
 
-    columnDefines.insert({ "Age", { MasterValueType::U64, offset } });
+    columnDefines.insert({"Age", {MasterValueType::U64, offset}});
     offset += GetValueSize(MasterValueType::U64);
 
-    columnDefines.insert({ "Class", { MasterValueType::String, offset } });
+    columnDefines.insert({"Class", {MasterValueType::String, offset}});
     offset += GetValueSize(MasterValueType::String);
 
     pOwner->SetColumnDefines(columnDefines);
@@ -114,11 +111,10 @@ bool MasterParser_CSV::Parse(const char*, MasterTable* pOwner)
     return true;
 }
 
-
 bool MasterParser_CSV::Free(MasterTable* pOwner)
 {
     const MasterTable::ColumnDefineList& columnDefines =
-      pOwner->GetColumnDefines(); 
+      pOwner->GetColumnDefines();
     NE::SizeT recordBlockSize = pOwner->GetRecordBlockSize();
     NE::SizeT recordCount = pOwner->GetRecordCount();
     NE::U8* pTableBlockTop = pOwner->GetTableBlockTop();
@@ -143,4 +139,3 @@ bool MasterParser_CSV::Free(MasterTable* pOwner)
 
     return true;
 }
-

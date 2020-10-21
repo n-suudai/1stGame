@@ -5,22 +5,18 @@
 #include "../../Engine/STL.hpp"
 #include <functional>
 
-
 enum class MasterValueType
 {
     S8,
     S16,
     S32,
     S64,
-
     U8,
     U16,
     U32,
     U64,
-
     Float,
     Double,
-
     String,
 };
 
@@ -56,7 +52,6 @@ inline NE::SizeT GetValueSize(MasterValueType type)
     return 0;
 }
 
-
 // メモリ使用量
 // 検索速度
 
@@ -78,7 +73,8 @@ public:
     typedef std::function<void(const MasterRecord*)> RecordAccessor;
 
 public:
-    MasterTable(const char* pFilename, NE::SharedPtr<IMasterParser> parser = nullptr);
+    MasterTable(const char* pFilename,
+                NE::SharedPtr<IMasterParser> parser = nullptr);
     ~MasterTable();
 
     // Parser から呼び出し
@@ -97,7 +93,6 @@ public:
     NE::U8* GetColumnAddr(NE::SizeT offset, NE::SizeT index) const;
 
     void ForEach(const RecordAccessor& accessor) const;
-
 
     void DebugPrint(bool columnNames = true);
 
@@ -138,4 +133,3 @@ private:
     const MasterTable& m_owner;
     NE::SizeT m_index;
 };
-

@@ -89,11 +89,11 @@ inline void FreeAlignedHeap(Heap* pHeap, void* pBlock)
 } // namespace NE
 
 #define DECLARE_HEAP(className)                                            \
-                                                                           \
+    \
 private:                                                                   \
     friend NE::STL::SHeapSharedAllocator<className>;                       \
     static NE::Heap* s_pHeap;                                              \
-                                                                           \
+    \
 public:                                                                    \
     static NE::Heap* GetHeap();                                            \
     static void* operator new(NE::SizeT bytes, const char* file,           \
@@ -235,9 +235,10 @@ inline void FreeAligned(void* pBlock)
 } // namespace NE
 
 #define DECLARE_HEAP(className)                                            \
+    \
 private:                                                                   \
     friend NE::STL::SHeapSharedAllocator<className>;                       \
-                                                                           \
+    \
 public:                                                                    \
     static void* operator new(NE::SizeT bytes, const char* file,           \
                               const NE::S32 line, const char* function);   \

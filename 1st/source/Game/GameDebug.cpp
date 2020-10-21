@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <iostream>
 
-
 #define DebugPrintf(format, ...)              \
     {                                         \
         char buff[256];                       \
@@ -18,8 +17,12 @@
 class TreeStatsReporter : public NE::IHeapTreeStatsReporter
 {
 public:
-    TreeStatsReporter() {}
-    ~TreeStatsReporter() {}
+    TreeStatsReporter()
+    {
+    }
+    ~TreeStatsReporter()
+    {
+    }
 
     void BeginReport() override
     {
@@ -45,19 +48,28 @@ public:
                     total.instanceCount);
     }
 
-    void EndReport() override {}
+    void EndReport() override
+    {
+    }
 };
 
 class LeakReporter : public NE::IMemoryLeakReporter
 {
 public:
-    LeakReporter() : m_leakCount(0) {}
-    ~LeakReporter() {}
+    LeakReporter() : m_leakCount(0)
+    {
+    }
+    ~LeakReporter()
+    {
+    }
 
-    void BeginReport() override { m_leakCount = 0; }
+    void BeginReport() override
+    {
+        m_leakCount = 0;
+    }
 
-    void Report(const NE::Heap* pHeap,
-                const NE::Allocation* pAllocation) override
+    void Report(const NE::Heap* pHeap, const NE::Allocation* pAllocation)
+      override
     {
         assert(pHeap != nullptr);
         assert(pAllocation != nullptr);
@@ -94,10 +106,17 @@ public:
 class AssertionReporter : public NE::IMemoryAssertionReporter
 {
 public:
-    AssertionReporter() : m_assertionCount(0) {}
-    ~AssertionReporter() {}
+    AssertionReporter() : m_assertionCount(0)
+    {
+    }
+    ~AssertionReporter()
+    {
+    }
 
-    void BeginReport() { m_assertionCount = 0; }
+    void BeginReport()
+    {
+        m_assertionCount = 0;
+    }
 
     void Report(const NE::Heap* pHeap, const NE::Allocation* pAllocation)
     {
@@ -133,20 +152,21 @@ public:
     size_t m_assertionCount;
 };
 
-
-void PrintDebug_Report_HeapTreeStats() {
+void PrintDebug_Report_HeapTreeStats()
+{
     TreeStatsReporter statsReporter;
     NE::HeapFactory::Get().ReportHeapTreeStats(&statsReporter);
 }
-void PrintDebug_Report_MemoryLeaks() {
+void PrintDebug_Report_MemoryLeaks()
+{
     LeakReporter leakReporter;
     NE::HeapFactory::Get().MemoryLeakCheck(&leakReporter);
 }
-void PrintDebug_Report_MemoryAssertions() {
+void PrintDebug_Report_MemoryAssertions()
+{
     AssertionReporter assertionReporter;
     NE::HeapFactory::Get().MemoryAssertionCheck(&assertionReporter);
 }
-
 
 void PrintDebug_Report_MemoryAll()
 {
@@ -154,4 +174,3 @@ void PrintDebug_Report_MemoryAll()
     PrintDebug_Report_MemoryLeaks();
     PrintDebug_Report_MemoryAssertions();
 }
-

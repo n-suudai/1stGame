@@ -27,7 +27,6 @@ THE SOFTWARE.
 
 */
 
-
 #include "NedAllocatePolicy.hpp"
 
 #if MEMORY_ALLOCATOR == MEMORY_ALLOCATOR_NED

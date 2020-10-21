@@ -185,10 +185,10 @@ void HeapFactory::MemoryAssertionCheck(IMemoryAssertionReporter* pReporter,
 }
 
 void HeapFactory::MemoryAssertionCheck(IMemoryAssertionReporter* pReporter,
-                          SizeT bookmarkStart) const
+                                       SizeT bookmarkStart) const
 {
     MemoryAssertionCheck(pReporter, bookmarkStart,
-                    MemoryTracker::Get().GetAllocationBookmark());
+                         MemoryTracker::Get().GetAllocationBookmark());
 }
 
 } // namespace NE

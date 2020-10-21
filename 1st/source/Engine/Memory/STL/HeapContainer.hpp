@@ -1,7 +1,6 @@
 
 #pragma once
 
-
 #include "SHeapAllocator.hpp"
 #include <vector>
 #include <list>
@@ -87,4 +86,3 @@ template <typename T, typename Sequence = HeapDeque<T>>
 using HeapStack = std::stack<T, Sequence>;
 
 } // namespace NE
-

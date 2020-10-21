@@ -1,10 +1,8 @@
 #pragma once
 
-
 #include "SHeapAllocator.hpp"
 #include <string>
 #include <sstream>
-
 
 namespace NE
 {

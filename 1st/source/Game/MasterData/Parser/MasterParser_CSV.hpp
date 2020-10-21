@@ -2,7 +2,6 @@
 
 #include "IMasterParser.hpp"
 
-
 class MasterParser_CSV : public IMasterParser
 {
 public:
@@ -13,4 +12,3 @@ public:
 
     bool Free(MasterTable* pOwner) override;
 };
-

@@ -57,12 +57,12 @@ struct SHeapAllocator : public SHeapAllocatorBase<alignof(T)>
     };
 
     inline SHeapAllocator()
-    { /* DO_NOTHING */
+    {/* DO_NOTHING */
     }
 
     template <typename U>
     inline SHeapAllocator(const SHeapAllocator<U>&)
-    { /* DO_NOTHING */
+    {/* DO_NOTHING */
     }
 
     inline T* allocate(size_t count)
@@ -101,12 +101,12 @@ struct SHeapSharedAllocator
     };
 
     inline SHeapSharedAllocator(Heap* pHeap) : m_pHeap(pHeap)
-    { /* DO_NOTHING */
+    {/* DO_NOTHING */
     }
 
     template <typename U>
     inline SHeapSharedAllocator(const SHeapSharedAllocator<U>& other)
-    { /* DO_NOTHING */
+    {/* DO_NOTHING */
         m_pHeap = other.m_pHeap;
     }
 

@@ -1,7 +1,6 @@
 ﻿#include "MasterData.hpp"
 #include "Parser/IMasterParser.hpp"
 
-
 // テーブル
 MasterTable::MasterTable(const char* pFilename,
                          NE::SharedPtr<IMasterParser> parser)
@@ -17,7 +16,6 @@ MasterTable::MasterTable(const char* pFilename,
     }
 }
 
-
 MasterTable::~MasterTable()
 {
     if (m_parser)
@@ -26,20 +24,24 @@ MasterTable::~MasterTable()
     }
 }
 
-
 // Parser から呼び出し
 void MasterTable::SetColumnDefines(const ColumnDefineList& defines)
 {
     m_columnDefines = defines;
 }
 
-void MasterTable::SetRecordBlockSize(NE::SizeT size) {
+void MasterTable::SetRecordBlockSize(NE::SizeT size)
+{
     m_recordBlockSize = size;
 }
 
-void MasterTable::SetRecordCount(NE::SizeT count) { m_recordCount = count; }
+void MasterTable::SetRecordCount(NE::SizeT count)
+{
+    m_recordCount = count;
+}
 
-void MasterTable::SetTableBlock(NE::UniqueBlob tableBlock) {
+void MasterTable::SetTableBlock(NE::UniqueBlob tableBlock)
+{
     m_tableBlock = std::move(tableBlock);
 }
 
@@ -48,11 +50,20 @@ const MasterTable::ColumnDefineList& MasterTable::GetColumnDefines() const
     return m_columnDefines;
 }
 
-NE::U64 MasterTable::GetRecordBlockSize() const { return m_recordBlockSize; }
+NE::U64 MasterTable::GetRecordBlockSize() const
+{
+    return m_recordBlockSize;
+}
 
-NE::U64 MasterTable::GetRecordCount() const { return m_recordCount; }
+NE::U64 MasterTable::GetRecordCount() const
+{
+    return m_recordCount;
+}
 
-NE::U8* MasterTable::GetTableBlockTop() const { return m_tableBlock.get(); }
+NE::U8* MasterTable::GetTableBlockTop() const
+{
+    return m_tableBlock.get();
+}
 
 NE::SizeT MasterTable::GetColumnOffset(const NE::String& columnName) const
 {
@@ -93,14 +104,14 @@ void MasterTable::ForEach(const RecordAccessor& accessor) const
     }
 }
 
-template<typename AddressType, typename Type>
+template <typename AddressType, typename Type>
 static void GetIntegerString(NE::U8* addr, NE::StringStream& ss)
 {
     Type value = static_cast<Type>(*reinterpret_cast<AddressType*>(addr));
     ss << value;
 }
 
-template<typename Type>
+template <typename Type>
 static void GetFloatingPointString(NE::U8* addr, NE::StringStream& ss)
 {
     Type value = (*reinterpret_cast<Type*>(addr));
@@ -113,8 +124,8 @@ static void GetStringString(NE::U8* addr, NE::StringStream& ss)
     ss << NE::String(reinterpret_cast<const char*>(stringAddr));
 }
 
-
-void MasterTable::DebugPrint(bool columnNames) {
+void MasterTable::DebugPrint(bool columnNames)
+{
 
     if (columnNames)
     {
@@ -149,7 +160,7 @@ void MasterTable::DebugPrint(bool columnNames) {
                 case MasterValueType::S32:
                     GetIntegerString<NE::S32, NE::S32>(addr, ss);
                     break;
-                
+
                 case MasterValueType::S64:
                     GetIntegerString<NE::S64, NE::S64>(addr, ss);
                     break;
@@ -190,16 +201,20 @@ void MasterTable::DebugPrint(bool columnNames) {
     }
 }
 
-
 // レコード
 MasterRecord::MasterRecord(const MasterTable& owner)
     : m_owner(owner), m_index(0)
 {
 }
 
-MasterRecord::~MasterRecord() {}
+MasterRecord::~MasterRecord()
+{
+}
 
-void MasterRecord::SetIndex(NE::SizeT index) { m_index = index; }
+void MasterRecord::SetIndex(NE::SizeT index)
+{
+    m_index = index;
+}
 
 NE::S8 MasterRecord::Get_S8(const NE::String& columnName) const
 {
@@ -261,12 +276,9 @@ NE::Double MasterRecord::Get_Double(const NE::String& columnName) const
     return (*reinterpret_cast<NE::Double*>(addr));
 }
 
-
-
 NE::String MasterRecord::Get_String(const NE::String& columnName) const
 {
     NE::U8* addr = m_owner.GetColumnAddr(columnName, m_index);
     NE::U64 stringAddr = (*reinterpret_cast<NE::U64*>(addr));
     return NE::String(reinterpret_cast<char*>(stringAddr));
 }
-
