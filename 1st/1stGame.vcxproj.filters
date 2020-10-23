@@ -39,5 +39,6 @@
     <ClInclude Include="source\Game\MasterData\Parser\IMasterParser.hpp" />
     <ClInclude Include="source\Game\MasterData\Parser\MasterParser_CSV.hpp" />
     <ClInclude Include="source\Engine\Memory\STL\HeapMemory.hpp" />
+    <ClInclude Include="source\Engine\Logging\Logging.hpp" />
   </ItemGroup>
 </Project>

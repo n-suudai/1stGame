@@ -169,6 +169,7 @@
     <ClCompile Include="source\Engine\Memory\Policy\NedPoolingAllocatePolicy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Engine\Logging\Logging.hpp" />
     <ClInclude Include="source\Engine\Memory\AlignedAllocator.hpp" />
     <ClInclude Include="source\Engine\Memory\AllocateConfig.hpp" />
     <ClInclude Include="source\Engine\Memory\Heap.hpp" />
