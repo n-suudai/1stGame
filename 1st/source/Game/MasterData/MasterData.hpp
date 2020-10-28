@@ -5,8 +5,9 @@
 #include "../../Engine/STL.hpp"
 #include <functional>
 
-enum class MasterValueType
+enum class MasterValueType : NE::S32
 {
+    ErrorType = -1,
     S8,
     S16,
     S32,
@@ -18,6 +19,7 @@ enum class MasterValueType
     Float,
     Double,
     String,
+    Num,
 };
 
 inline NE::SizeT GetValueSize(MasterValueType type)

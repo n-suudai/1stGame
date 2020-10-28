@@ -2,6 +2,133 @@
 #include "../MasterData.hpp"
 #include <array>
 
+void GetStringList(
+    const NE::String& text,
+    NE::String::value_type delimiter,
+    NE::Vector<NE::String>& stringList)
+{
+    stringList.clear();
+
+    NE::StringStream ss(text);
+    NE::String element;
+
+    while (std::getline(ss, element, delimiter))
+    {
+        stringList.push_back(element);
+    }
+}
+
+
+
+template<class T>
+T ToValue(const NE::String& valueStr, T notFound = T())
+{
+    if (valueStr == "") { return notFound; }
+
+    NE::IStringStream iss;
+
+    iss.str(valueStr);
+
+    T value;
+
+    iss >> value;
+
+    return value;
+}
+
+
+MasterValueType GetValueType(const NE::String& typeText)
+{
+    static const char* s_pValueTypeTexts[static_cast<NE::S32>(MasterValueType::Num)] = {
+            "S8",
+            "S16",
+            "S32",
+            "S64",
+            "U8",
+            "U16",
+            "U32",
+            "U64",
+            "Float",
+            "Double",
+            "String",
+    };
+
+    for (NE::S32 type = static_cast<NE::S32>(MasterValueType::S8);
+        type < static_cast<NE::S32>(MasterValueType::Num);
+        type++)
+    {
+        if (typeText == s_pValueTypeTexts[type])
+        {
+            return static_cast<MasterValueType>(type);
+        }
+    }
+
+    return MasterValueType::ErrorType;
+}
+
+
+bool MakeColumnDefineList(
+    const NE::String& line1,
+    const NE::String& line2,
+    MasterTable::ColumnDefineList& columnDefineList)
+{
+    columnDefineList.clear();
+
+    NE::Vector<NE::String> columnNames;
+    NE::Vector<NE::String> columnTypes;
+
+    // 1行目 カラム名
+    GetStringList(line1, ',', columnNames);
+
+    // 2行目 カラム型名
+    GetStringList(line2, ',', columnTypes);
+
+
+    NE::SizeT columnCount = columnNames.size();
+
+    if (columnCount > columnTypes.size())
+    {
+        columnCount = columnTypes.size();
+    }
+
+    NE::SizeT currentOffset = 0;
+    bool result = true;
+
+    for (NE::SizeT i = 0; i < columnCount; i++)
+    {
+        auto it = columnDefineList.find(columnNames[i]);
+
+        if (it != columnDefineList.end()) // カラム名被り
+        {
+            result = false;
+            break;
+        }
+
+        MasterTable::ValueTypeAndOffset& typeAndOffset = columnDefineList[columnNames[i]];
+        
+        typeAndOffset.type = GetValueType(columnTypes[i]);
+
+        if (typeAndOffset.type == MasterValueType::ErrorType)
+        {
+            result = false;
+            break;
+        }
+
+        typeAndOffset.offset = currentOffset;
+
+        currentOffset += GetValueSize(typeAndOffset.type);
+    }
+
+    if (!result)
+    {
+        columnDefineList.clear();
+    }
+
+    return result;
+}
+
+
+
 MasterParser_CSV::MasterParser_CSV()
 {
 }
