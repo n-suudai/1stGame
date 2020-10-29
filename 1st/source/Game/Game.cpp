@@ -9,7 +9,7 @@ Game::Game(const char* title) : m_title(title)
     m_character = NE::MakeUnique<Character>();
 
     NE::SharedPtr<IMasterParser> parser = NE::MakeShared<MasterParser_CSV>();
-    m_masterTable = NE::MakeUnique<MasterTable>("", parser);
+    m_masterTable = NE::MakeUnique<MasterTable>("Character.table", parser);
 }
 
 Game::~Game()

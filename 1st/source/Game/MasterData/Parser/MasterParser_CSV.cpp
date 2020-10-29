@@ -1,6 +1,7 @@
 ﻿#include "MasterParser_CSV.hpp"
 #include "../MasterData.hpp"
 #include <array>
+#include <fstream>
 
 void GetStringList(
     const NE::String& text,
@@ -16,24 +17,6 @@ void GetStringList(
     {
         stringList.push_back(element);
     }
-}
-
-
-
-template<class T>
-T ToValue(const NE::String& valueStr, T notFound = T())
-{
-    if (valueStr == "") { return notFound; }
-
-    NE::IStringStream iss;
-
-    iss.str(valueStr);
-
-    T value;
-
-    iss >> value;
-
-    return value;
 }
 
 
@@ -67,7 +50,7 @@ MasterValueType GetValueType(const NE::String& typeText)
 }
 
 
-bool MakeColumnDefineList(
+NE::SizeT MakeColumnDefineList(
     const NE::String& line1,
     const NE::String& line2,
     MasterTable::ColumnDefineList& columnDefineList)
@@ -121,12 +104,56 @@ bool MakeColumnDefineList(
 
     if (!result)
     {
+        currentOffset = 0;
         columnDefineList.clear();
     }
 
-    return result;
+    return currentOffset;
 }
 
+template<class T>
+T ToValue(const NE::String& valueStr, T notFound = T())
+{
+    if (valueStr == "") { return notFound; }
+
+    NE::IStringStream iss;
+
+    iss.str(valueStr);
+
+    T value;
+
+    iss >> value;
+
+    return value;
+}
+
+template<typename T>
+NE::U8* WriteValue(NE::U8* pBlock, const NE::String& valueStr)
+{
+    T value = ToValue<T>(valueStr, T(0));
+
+    T* p = reinterpret_cast<T*>(pBlock);
+
+    (*p) = value;
+
+    return pBlock + sizeof(T);
+}
+
+template<>
+NE::U8* WriteValue<NE::String>(NE::U8* pBlock, const NE::String& valueStr)
+{
+    NE::SizeT length = strlen(valueStr.c_str());
+
+    void* pMem = MEM_ALLOC(length + 1);
+
+    memcpy_s(pMem, length + 1, valueStr.c_str(), length);
+
+    NE::U64& addr = (*reinterpret_cast<NE::U64*>(pBlock));
+
+    addr = reinterpret_cast<NE::U64>(pMem);
+
+    return pBlock + sizeof(NE::U64);
+}
 
 
 MasterParser_CSV::MasterParser_CSV()
@@ -139,105 +166,107 @@ MasterParser_CSV::~MasterParser_CSV()
 
 bool MasterParser_CSV::Parse(const char* pFilename, MasterTable* pOwner)
 {
+    std::ifstream ifs(pFilename);
     MasterTable::ColumnDefineList columnDefines;
-    (pFilename);
-    //NE::StringStream ss();
+    NE::SizeT recordBlockSize = 0;
 
-//    bool result = MakeColumnDefineList();
-
-
-    struct DummyData
     {
-        NE::U64 id;
-        NE::String name;
-        NE::U64 age;
-        NE::String className;
-    };
+        NE::String line1;
+        if (!std::getline(ifs, line1))
+        {
+            return false;
+        }
 
-    std::array<DummyData, 3> dummies = {
-      DummyData{1000, "ボブ", 18, "人間"},
-      DummyData{1001, "アリス", 25, "魔女"},
-      DummyData{1003, "ドラゴ", 25, "ドラゴン"}, };
+        NE::String line2;
+        if (!std::getline(ifs, line2))
+        {
+            return false;
+        }
 
-    NE::SizeT offset = 0;
-    NE::SizeT recordCount = dummies.size();
+        recordBlockSize = MakeColumnDefineList(line1, line2, columnDefines);
 
+        if (recordBlockSize == 0)
+        {
+            return false;
+        }
+    }
 
-    columnDefines.insert({"Id", {MasterValueType::U64, offset}});
-    offset += GetValueSize(MasterValueType::U64);
+    NE::String line;
+    NE::Vector<NE::Vector<NE::String>> lineValues;
 
-    columnDefines.insert({"Name", {MasterValueType::String, offset}});
-    offset += GetValueSize(MasterValueType::String);
+    while (std::getline(ifs, line))
+    {
+        if (line == "") { break; }
 
-    columnDefines.insert({"Age", {MasterValueType::U64, offset}});
-    offset += GetValueSize(MasterValueType::U64);
+        NE::Vector<NE::String> values;
 
-    columnDefines.insert({"Class", {MasterValueType::String, offset}});
-    offset += GetValueSize(MasterValueType::String);
+        GetStringList(line, ',', values);
+
+        if (columnDefines.size() != values.size())
+        {
+            return false;
+        }
+
+        lineValues.push_back(std::move(values));
+    }
+
+    NE::UniqueBlob tableBlock = MAKE_UNIQUE_BLOB(lineValues.size() * recordBlockSize);
+    
+    for (NE::SizeT lineIndex = 0; lineIndex < lineValues.size(); lineIndex++)
+    {
+        NE::Vector<NE::String>& values = lineValues[lineIndex];
+        NE::U8* pCurrentBlock = tableBlock.get() + recordBlockSize * lineIndex;
+
+        NE::SizeT columnIndex = 0;
+        for (auto column : columnDefines)
+        {
+
+            switch (column.second.type)
+            {
+            case MasterValueType::S8:
+            case MasterValueType::S16:
+            case MasterValueType::S32:
+                pCurrentBlock = WriteValue<NE::S32>(pCurrentBlock, values[columnIndex]);
+                break;
+
+            case MasterValueType::U8:
+            case MasterValueType::U16:
+            case MasterValueType::U32:
+                pCurrentBlock = WriteValue<NE::U32>(pCurrentBlock, values[columnIndex]);
+                break;
+
+            case MasterValueType::S64:
+                pCurrentBlock = WriteValue<NE::S64>(pCurrentBlock, values[columnIndex]);
+                break;
+
+            case MasterValueType::U64:
+                pCurrentBlock = WriteValue<NE::U64>(pCurrentBlock, values[columnIndex]);
+                break;
+
+            case MasterValueType::Float:
+                pCurrentBlock = WriteValue<NE::Float>(pCurrentBlock, values[columnIndex]);
+                break;
+
+            case MasterValueType::Double:
+                pCurrentBlock = WriteValue<NE::Double>(pCurrentBlock, values[columnIndex]);
+                break;
+
+            case MasterValueType::String:
+                pCurrentBlock = WriteValue<NE::String>(pCurrentBlock, values[columnIndex]);
+                break;
+
+            default:
+                break;
+            }
+            columnIndex++;
+        }
+    }
 
     pOwner->SetColumnDefines(columnDefines);
 
-    pOwner->SetRecordBlockSize(offset);
+    pOwner->SetRecordBlockSize(recordBlockSize);
 
-    pOwner->SetRecordCount(recordCount);
-
-    NE::UniqueBlob tableBlock = MAKE_UNIQUE_BLOB(offset * recordCount);
-
-    for (NE::SizeT record = 0; record < recordCount; record++)
-    {
-        NE::SizeT currentOffset = 0;
-        NE::U8* pRecordTop = tableBlock.get() + (record * offset);
-
-        // Id
-        {
-            NE::U64& id =
-              (*reinterpret_cast<NE::U64*>(pRecordTop + currentOffset));
-            currentOffset += sizeof(NE::U64);
-
-            id = dummies[record].id;
-        }
-
-        // Name
-        {
-            NE::U64& addr =
-              (*reinterpret_cast<NE::U64*>(pRecordTop + currentOffset));
-            currentOffset += sizeof(NE::U64);
-
-            NE::SizeT nameLength = strlen(dummies[record].name.c_str());
-
-            void* pMem = MEM_ALLOC(nameLength + 1);
-
-            memcpy_s(pMem, nameLength + 1, dummies[record].name.c_str(),
-                     nameLength);
-
-            addr = reinterpret_cast<NE::U64>(pMem);
-        }
-
-        // Age
-        {
-            NE::U64& age =
-              (*reinterpret_cast<NE::U64*>(pRecordTop + currentOffset));
-            currentOffset += sizeof(NE::U64);
-
-            age = dummies[record].age;
-        }
-
-        // Class
-        {
-            NE::U64& addr =
-              (*reinterpret_cast<NE::U64*>(pRecordTop + currentOffset));
-            currentOffset += sizeof(NE::U64);
-
-            NE::SizeT nameLength = strlen(dummies[record].className.c_str());
-
-            void* pMem = MEM_ALLOC(nameLength + 1);
-
-            memcpy_s(pMem, nameLength + 1, dummies[record].className.c_str(),
-                     nameLength);
-
-            addr = reinterpret_cast<NE::U64>(pMem);
-        }
-    }
+    pOwner->SetRecordCount(lineValues.size());
 
     pOwner->SetTableBlock(std::move(tableBlock));
 

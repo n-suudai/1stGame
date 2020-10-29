@@ -31,18 +31,5 @@ int main()
 
     system("pause");
 
-    // ファイル入力テスト
-    {
-        std::ifstream ifs("Test.txt");
-
-        NE::String text;
-        NE::S32 line = 1;
-
-        while (std::getline(ifs, text))
-        {
-            printf_s("Line %d : %s\n", line++, text.c_str());
-        }
-    }
-
     return 0;
 }
