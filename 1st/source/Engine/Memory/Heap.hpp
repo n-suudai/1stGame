@@ -2,6 +2,9 @@
 #pragma once
 
 #include "MemoryTracker.hpp"
+
+#if USE_HEAP_TRACKING
+
 #include <mutex>
 
 namespace NE
@@ -31,6 +34,9 @@ struct Allocation
 
     Allocation* pNext; // リンクリスト (ヒープをウォークするのに必要)
     Allocation* pPrev;
+
+    static void* operator new(NE::SizeT bytes);
+    static void operator delete(void* pBlock);
 };
 
 // ヒープ
@@ -194,3 +200,6 @@ private:
 };
 
 } // namespace NE
+
+#endif // USE_HEAP_TRACKING
+

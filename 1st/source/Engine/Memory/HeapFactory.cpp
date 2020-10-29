@@ -1,5 +1,8 @@
 ﻿
 #include "HeapFactory.hpp"
+
+#if USE_HEAP_TRACKING
+
 #include "HeapWalk.hpp"
 #include <assert.h>
 
@@ -192,3 +195,6 @@ void HeapFactory::MemoryAssertionCheck(IMemoryAssertionReporter* pReporter,
 }
 
 } // namespace NE
+
+#endif // USE_HEAP_TRACKING
+

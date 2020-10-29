@@ -4,7 +4,7 @@
 #include "AllocateConfig.hpp"
 #include "Heap.hpp"
 #include "HeapFactory.hpp"
-#include "STL/SHeapAllocator.hpp"
+#include "STL/HeapAllocator.hpp"
 #include <cassert>
 
 #if USE_HEAP_TRACKING

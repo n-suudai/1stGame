@@ -1,7 +1,9 @@
 ﻿
 #pragma once
 
-#include "../Types.hpp"
+#include "MemoryConfig.hpp"
+
+#if USE_HEAP_TRACKING
 
 namespace NE
 {
@@ -63,3 +65,6 @@ public:
 };
 
 } // namespace NE
+
+#endif // USE_HEAP_TRACKING
+

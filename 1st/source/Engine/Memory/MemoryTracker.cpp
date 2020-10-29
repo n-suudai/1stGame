@@ -1,6 +1,11 @@
 ﻿
 #include "MemoryTracker.hpp"
+
+#if USE_HEAP_TRACKING
+
+
 #include "Heap.hpp"
+#include "AllocateConfig.hpp"
 #include <assert.h>
 
 namespace NE
@@ -28,7 +33,7 @@ Allocation* MemoryTracker::RecordAllocation(void* pBlock, SizeT bytes,
 {
     std::lock_guard<std::recursive_mutex> lock(m_protection);
 
-    Allocation* pAllocation = new Allocation(); // デフォルトの new
+    Allocation* pAllocation = new Allocation();
     pAllocation->pBlock = pBlock;
     pAllocation->bytes = bytes;
     pAllocation->file = file;
@@ -68,7 +73,7 @@ void MemoryTracker::RecordDeallocation(void* pBlock, Heap* pHeap)
         // リンクリストから切り離す
         pHeap->EraseAllocation(it->second);
 
-        delete it->second; // デフォルトの delete
+        delete it->second;
 
         m_allocations.erase(it);
     }
@@ -80,3 +85,6 @@ SizeT MemoryTracker::GetAllocationBookmark() const
 }
 
 } // namespace NE
+
+#endif // USE_HEAP_TRACKING
+

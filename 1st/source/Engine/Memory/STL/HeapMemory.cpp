@@ -20,9 +20,9 @@ UniqueBlob MakeUniqueBlob(SizeT bytes, Heap* pHeap)
 #else  // !USE_HEAP_TRACKING
 UniqueBlob MakeUniqueBlob(SizeT bytes)
 {
-    Detail::CustomDeleter_Blob<NE::U8> deleter();
+    Detail::CustomDeleter_Blob<NE::U8> deleter;
 
-    return UniqueBlob(reinterpret_cast<NE::U8 *>(MEM_ALLOC_HEAP(bytes)),
+    return UniqueBlob(reinterpret_cast<NE::U8*>(MEM_ALLOC_HEAP(bytes)),
                       deleter);
 }
 #endif // USE_HEAP_TRACKING

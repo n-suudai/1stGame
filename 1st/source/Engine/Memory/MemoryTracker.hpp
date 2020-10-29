@@ -1,9 +1,13 @@
 ﻿
 #pragma once
 
-#include "../Types.hpp"
+#include "MemoryConfig.hpp"
+
+#if USE_HEAP_TRACKING
+
+#include "STL/HeapAllocator_NonTracking.hpp"
+#include <map>
 #include <mutex>
-#include <unordered_map>
 
 namespace NE
 {
@@ -15,6 +19,10 @@ struct Allocation;
 class MemoryTracker
 {
 public:
+    typedef typename std::map<
+      void*, Allocation*, std::less<void*>,
+      STL::SHeapAllocator_NonTracking<std::pair<const void*, Allocation*>>> TrackMap;
+
     static MemoryTracker& Get();
 
     MemoryTracker();
@@ -30,8 +38,11 @@ public:
 
 private:
     std::recursive_mutex m_protection;
-    std::unordered_map<void*, Allocation*> m_allocations;
+    TrackMap m_allocations;
     SizeT m_nextAllocationBookmark;
 };
 
 } // namespace NE
+
+#endif // USE_HEAP_TRACKING
+

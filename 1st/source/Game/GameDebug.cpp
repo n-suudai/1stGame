@@ -14,6 +14,8 @@
         printf_s(buff);                       \
     }
 
+#if USE_HEAP_TRACKING
+
 class TreeStatsReporter : public NE::IHeapTreeStatsReporter
 {
 public:
@@ -174,3 +176,27 @@ void PrintDebug_Report_MemoryAll()
     PrintDebug_Report_MemoryLeaks();
     PrintDebug_Report_MemoryAssertions();
 }
+
+#else // !USE_HEAP_TRACKING
+
+void PrintDebug_Report_HeapTreeStats()
+{
+    DebugPrintf("HeapTracking is not enabled.\n");
+}
+void PrintDebug_Report_MemoryLeaks()
+{
+    DebugPrintf("HeapTracking is not enabled.\n");
+}
+void PrintDebug_Report_MemoryAssertions()
+{
+    DebugPrintf("HeapTracking is not enabled.\n");
+}
+
+void PrintDebug_Report_MemoryAll()
+{
+    PrintDebug_Report_HeapTreeStats();
+    PrintDebug_Report_MemoryLeaks();
+    PrintDebug_Report_MemoryAssertions();
+}
+
+#endif // USE_HEAP_TRACKING

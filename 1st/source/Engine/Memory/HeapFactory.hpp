@@ -3,6 +3,8 @@
 
 #include "Heap.hpp"
 
+#if USE_HEAP_TRACKING
+
 namespace NE
 {
 
@@ -62,3 +64,6 @@ private:
 };
 
 } // namespace NE
+
+#endif // USE_HEAP_TRACKING
+

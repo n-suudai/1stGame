@@ -27,7 +27,6 @@
     <ClInclude Include="source\Engine\Memory\MemoryManager.hpp" />
     <ClInclude Include="source\Engine\Memory\MemoryTracker.hpp" />
     <ClInclude Include="source\Engine\Types.hpp" />
-    <ClInclude Include="source\Engine\Memory\STL\SHeapAllocator.hpp" />
     <ClInclude Include="source\Engine\Memory\STL\HeapString.hpp" />
     <ClInclude Include="source\Engine\Memory\STL\HeapContainer.hpp" />
     <ClInclude Include="source\Engine\STL.hpp" />
@@ -40,5 +39,7 @@
     <ClInclude Include="source\Game\MasterData\Parser\MasterParser_CSV.hpp" />
     <ClInclude Include="source\Engine\Memory\STL\HeapMemory.hpp" />
     <ClInclude Include="source\Engine\Logging\Logging.hpp" />
+    <ClInclude Include="source\Engine\Memory\STL\HeapAllocator_NonTracking.hpp" />
+    <ClInclude Include="source\Engine\Memory\STL\HeapAllocator.hpp" />
   </ItemGroup>
 </Project>

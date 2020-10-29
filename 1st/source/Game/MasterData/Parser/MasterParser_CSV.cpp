@@ -137,8 +137,15 @@ MasterParser_CSV::~MasterParser_CSV()
 {
 }
 
-bool MasterParser_CSV::Parse(const char*, MasterTable* pOwner)
+bool MasterParser_CSV::Parse(const char* pFilename, MasterTable* pOwner)
 {
+    MasterTable::ColumnDefineList columnDefines;
+    (pFilename);
+    //NE::StringStream ss();
+
+//    bool result = MakeColumnDefineList();
+
+
     struct DummyData
     {
         NE::U64 id;
@@ -155,7 +162,6 @@ bool MasterParser_CSV::Parse(const char*, MasterTable* pOwner)
     NE::SizeT offset = 0;
     NE::SizeT recordCount = dummies.size();
 
-    MasterTable::ColumnDefineList columnDefines;
 
     columnDefines.insert({"Id", {MasterValueType::U64, offset}});
     offset += GetValueSize(MasterValueType::U64);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SHeapAllocator.hpp"
+#include "HeapAllocator.hpp"
 #include <string>
 #include <sstream>
 

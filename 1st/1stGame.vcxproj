@@ -181,10 +181,11 @@
     <ClInclude Include="source\Engine\Memory\Policy\NedAllocatePolicy.hpp" />
     <ClInclude Include="source\Engine\Memory\Policy\NedPoolingAllocatePolicy.hpp" />
     <ClInclude Include="source\Engine\Memory\Policy\StandardAllocatePolicy.hpp" />
+    <ClInclude Include="source\Engine\Memory\STL\HeapAllocator_NonTracking.hpp" />
     <ClInclude Include="source\Engine\Memory\STL\HeapContainer.hpp" />
     <ClInclude Include="source\Engine\Memory\STL\HeapMemory.hpp" />
     <ClInclude Include="source\Engine\Memory\STL\HeapString.hpp" />
-    <ClInclude Include="source\Engine\Memory\STL\SHeapAllocator.hpp" />
+    <ClInclude Include="source\Engine\Memory\STL\HeapAllocator.hpp" />
     <ClInclude Include="source\Engine\STL.hpp" />
     <ClInclude Include="source\Engine\Types.hpp" />
     <ClInclude Include="source\Game\Character.hpp" />

@@ -3,7 +3,7 @@
 
 #include "../MemoryConfig.hpp"
 #include "../MemoryManager.hpp"
-#include "SHeapAllocator.hpp"
+#include "HeapAllocator.hpp"
 #include <memory>
 
 namespace NE
