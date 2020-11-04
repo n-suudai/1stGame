@@ -9,36 +9,34 @@ namespace NE
 {
 namespace Log
 {
-    enum class Level
-    {
-        Verbose,
-        Debug,
-        Warning,
-        Error,
-        Assert,
-        Num
-    };
+enum class Level
+{
+    Verbose,
+    Debug,
+    Warning,
+    Error,
+    Assert,
+    Num
+};
 
-    class Logger
-    {
-        DECLARE_HEAP(Logger);
+class Logger
+{
+    DECLARE_HEAP(Logger);
 
-    public:
-        Logger();
+public:
+    Logger();
 
-        ~Logger() = default;
+    ~Logger() = default;
 
-        void Print(const NE::String& str) const;
+    void Print(const NE::String& str) const;
 
-        NE::OStringStream& GetStream();
+    NE::OStringStream& GetStream();
 
-        void FlushStream();
+    void FlushStream();
 
-    protected:
-        NE::OStringStream m_stream;
-    };
-
-
+protected:
+    NE::OStringStream m_stream;
+};
 
 } // namespace Log
 

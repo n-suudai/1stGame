@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "Entities.hpp"
 #include "../Engine/STL.hpp"
+#include "Entities.hpp"
 
 class MasterTable;
 class Character;
@@ -20,6 +20,5 @@ private:
 private:
     NE::String m_title;
     NE::UniquePtr<Character> m_character;
-
     NE::UniquePtr<MasterTable> m_masterTable;
 };

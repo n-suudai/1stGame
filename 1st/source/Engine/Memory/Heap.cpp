@@ -35,7 +35,9 @@ Heap::Heap()
 {
 }
 
-Heap::~Heap() {}
+Heap::~Heap()
+{
+}
 
 void Heap::Initialize()
 {
@@ -76,9 +78,15 @@ void Heap::Deactivate()
     m_allocatedInstanceCount = 0;
 }
 
-const char* Heap::GetName() const { return m_name; }
+const char* Heap::GetName() const
+{
+    return m_name;
+}
 
-bool Heap::IsActive() const { return m_isActive; }
+bool Heap::IsActive() const
+{
+    return m_isActive;
+}
 
 // リンクリストを構築
 void Heap::AddAllocation(Allocation* pAllocation)
@@ -249,4 +257,3 @@ void Heap::GetTreeStats(SizeT& totalBytes, SizeT& totalPeakBytes,
 
 } // namespace NE
 #endif // USE_HEAP_TRACKING
-

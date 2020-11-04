@@ -197,4 +197,3 @@ void HeapFactory::MemoryAssertionCheck(IMemoryAssertionReporter* pReporter,
 } // namespace NE
 
 #endif // USE_HEAP_TRACKING
-

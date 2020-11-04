@@ -3,7 +3,6 @@
 
 #if USE_HEAP_TRACKING
 
-
 #include "Heap.hpp"
 #include "AllocateConfig.hpp"
 #include <assert.h>
@@ -87,4 +86,3 @@ SizeT MemoryTracker::GetAllocationBookmark() const
 } // namespace NE
 
 #endif // USE_HEAP_TRACKING
-

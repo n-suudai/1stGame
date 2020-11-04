@@ -27,7 +27,7 @@ struct CustomDeleter
     {
         static_assert(0 < sizeof(T), "can't delete an incomplete type");
 
-        DELETE ptr;
+        NE_DELETE ptr;
     }
 };
 
@@ -49,7 +49,7 @@ struct CustomDeleter<T[]>
     { // delete a pointer
         static_assert(0 < sizeof(T2), "can't delete an incomplete type");
 
-        DELETE[] ptr;
+        NE_DELETE[] ptr;
     }
 };
 
@@ -79,7 +79,7 @@ struct CustomDeleter_Blob
     {
         static_assert(0 < sizeof(T), "can't delete an incomplete type");
 
-        MEM_FREE_HEAP(ptr);
+        NE_MEM_FREE_HEAP(ptr);
     }
 
     Heap *m_pHeap;
@@ -100,7 +100,7 @@ struct CustomDeleter_Blob
     {
         static_assert(0 < sizeof(T), "can't delete an incomplete type");
 
-        MEM_FREE_HEAP(ptr);
+        NE_MEM_FREE_HEAP(ptr);
     }
 };
 #endif // USE_HEAP_TRACKING
@@ -143,7 +143,8 @@ inline UniquePtr<T> MakeUnique(Arguments &&... arguments)
 {
     static Detail::CustomDeleter<T> deleter = Detail::CustomDeleter<T>();
 
-    return UniquePtr<T>(NEW T(std::forward<Arguments>(arguments)...), deleter);
+    return UniquePtr<T>(NE_NEW T(std::forward<Arguments>(arguments)...),
+                        deleter);
 }
 
 template <
@@ -155,7 +156,7 @@ inline UniquePtr<T> MakeUnique(size_t size)
 
     static Detail::CustomDeleter<T> deleter = Detail::CustomDeleter<T>();
 
-    return (UniquePtr<T>(NEW Element[size](), deleter));
+    return (UniquePtr<T>(NE_NEW Element[size](), deleter));
 }
 
 template <typename T, class... Arguments,

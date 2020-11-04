@@ -1,8 +1,7 @@
-﻿#include "GameDebug.hpp"
-#include "Game.hpp"
+﻿#include "Game.hpp"
 #include "Character.hpp"
+#include "GameDebug.hpp"
 #include "MasterData/MasterData.hpp"
-#include "MasterData/Parser/MasterParser_CSV.hpp"
 
 Game::Game(const char* title) : m_title(title)
 {

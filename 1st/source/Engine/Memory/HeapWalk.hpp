@@ -67,4 +67,3 @@ public:
 } // namespace NE
 
 #endif // USE_HEAP_TRACKING
-

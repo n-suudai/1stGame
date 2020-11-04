@@ -165,25 +165,27 @@ public:                                                                    \
         return s_pHeap;                                                        \
     }
 
-#define NEW new (__FILE__, __LINE__, __FUNCTION__)
-#define DELETE delete
+#define NE_NEW new (__FILE__, __LINE__, __FUNCTION__)
+#define NE_DELETE delete
 
-#define MEM_ALLOC(bytes) NE::Malloc((bytes), __FILE__, __LINE__, __FUNCTION__)
-#define MEM_FREE(pBlock) NE::Free((pBlock))
+#define NE_MEM_ALLOC(bytes) \
+    NE::Malloc((bytes), __FILE__, __LINE__, __FUNCTION__)
+#define NE_MEM_FREE(pBlock) NE::Free((pBlock))
 
-#define MEM_ALLOC_ALIGNED(bytes, alignment) \
+#define NE_MEM_ALLOC_ALIGNED(bytes, alignment) \
     NE::MallocAligned<alignment>((bytes), __FILE__, __LINE__, __FUNCTION__)
-#define MEM_FREE_ALIGNED(pBlock, alignment) NE::FreeAligned<alignment>((pBlock))
+#define NE_MEM_FREE_ALIGNED(pBlock, alignment) \
+    NE::FreeAligned<alignment>((pBlock))
 
 // クラスの Heap から確保＆解放
-#define MEM_ALLOC_HEAP(bytes) \
+#define NE_MEM_ALLOC_HEAP(bytes) \
     NE::MallocHeap(GetHeap(), (bytes), __FILE__, __LINE__, __FUNCTION__)
-#define MEM_FREE_HEAP(pBlock) NE::FreeHeap(GetHeap(), (pBlock))
+#define NE_MEM_FREE_HEAP(pBlock) NE::FreeHeap(GetHeap(), (pBlock))
 
-#define MEM_ALLOC_ALIGNED_HEAP(bytes, alignment)                             \
+#define NE_MEM_ALLOC_ALIGNED_HEAP(bytes, alignment)                          \
     NE::MallocAlignedHeap<alignment>(GetHeap(), (bytes), __FILE__, __LINE__, \
                                      __FUNCTION__)
-#define MEM_FREE_ALIGNED_HEAP(pBlock, alignment) \
+#define NE_MEM_FREE_ALIGNED_HEAP(pBlock, alignment) \
     NE::FreeAlignedHeap<alignment>(GetHeap(), (pBlock))
 
 #else // !USE_HEAP_TRACKING
@@ -287,22 +289,23 @@ public:                                                                    \
         policyName::DeallocateBytes(pBlock);                                   \
     }
 
-#define NEW new
-#define DELETE delete
+#define NE_NEW new
+#define NE_DELETE delete
 
-#define MEM_ALLOC(bytes) NE::Malloc((bytes))
-#define MEM_FREE(pBlock) NE::Free((pBlock))
+#define NE_MEM_ALLOC(bytes) NE::Malloc((bytes))
+#define NE_MEM_FREE(pBlock) NE::Free((pBlock))
 
-#define MEM_ALLOC_ALIGNED(bytes, alignment) \
+#define NE_MEM_ALLOC_ALIGNED(bytes, alignment) \
     NE::MallocAligned<alignment>((bytes))
-#define MEM_FREE_ALIGNED(pBlock, alignment) NE::FreeAligned<alignment>((pBlock))
+#define NE_MEM_FREE_ALIGNED(pBlock, alignment) \
+    NE::FreeAligned<alignment>((pBlock))
 
-#define MEM_ALLOC_HEAP(bytes) NE::Malloc((bytes))
-#define MEM_FREE_HEAP(pBlock) NE::Free((pBlock))
+#define NE_MEM_ALLOC_HEAP(bytes) NE::Malloc((bytes))
+#define NE_MEM_FREE_HEAP(pBlock) NE::Free((pBlock))
 
-#define MEM_ALLOC_ALIGNED_HEAP(bytes, alignment) \
+#define NE_MEM_ALLOC_ALIGNED_HEAP(bytes, alignment) \
     NE::MallocAligned<alignment>((bytes))
-#define MEM_FREE_ALIGNED_HEAP(pBlock, alignment) \
+#define NE_MEM_FREE_ALIGNED_HEAP(pBlock, alignment) \
     NE::FreeAligned<alignment>((pBlock))
 
 #endif // USE_HEAP_TRACKING

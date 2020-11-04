@@ -2,16 +2,16 @@
 #pragma once
 
 #include "HeapAllocator.hpp"
-#include <vector>
-#include <list>
-#include <forward_list>
-#include <map>
-#include <unordered_map>
-#include <set>
-#include <unordered_set>
-#include <queue>
 #include <deque>
+#include <forward_list>
+#include <list>
+#include <map>
+#include <queue>
+#include <set>
 #include <stack>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 namespace NE
 {

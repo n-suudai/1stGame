@@ -1,12 +1,8 @@
 ﻿#pragma once
 
-#include "../../Entities.hpp"
-#include "../../../Engine/Types.hpp"
 #include "../../../Engine/STL.hpp"
-
-
-
-
+#include "../../../Engine/Types.hpp"
+#include "../../Entities.hpp"
 
 class MasterTable;
 class IMasterParser : public MasterEntity

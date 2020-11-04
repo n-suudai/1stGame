@@ -9,10 +9,11 @@
     <ClCompile Include="source\Engine\Memory\MemoryTracker.cpp" />
     <ClCompile Include="source\Game\Game.cpp" />
     <ClCompile Include="source\Game\GameDebug.cpp" />
-    <ClCompile Include="source\Game\MasterData\MasterData.cpp" />
     <ClCompile Include="source\Game\Entities.cpp" />
     <ClCompile Include="source\Game\MasterData\Parser\MasterParser_CSV.cpp" />
     <ClCompile Include="source\Engine\Memory\STL\HeapMemory.cpp" />
+    <ClCompile Include="source\Game\MasterData\MasterRecord.cpp" />
+    <ClCompile Include="source\Game\MasterData\MasterTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Engine\Memory\Policy\NedAllocatePolicy.hpp" />
@@ -33,7 +34,6 @@
     <ClInclude Include="source\Game\Game.hpp" />
     <ClInclude Include="source\Game\Character.hpp" />
     <ClInclude Include="source\Game\GameDebug.hpp" />
-    <ClInclude Include="source\Game\MasterData\MasterData.hpp" />
     <ClInclude Include="source\Game\Entities.hpp" />
     <ClInclude Include="source\Game\MasterData\Parser\IMasterParser.hpp" />
     <ClInclude Include="source\Game\MasterData\Parser\MasterParser_CSV.hpp" />
@@ -41,5 +41,9 @@
     <ClInclude Include="source\Engine\Logging\Logging.hpp" />
     <ClInclude Include="source\Engine\Memory\STL\HeapAllocator_NonTracking.hpp" />
     <ClInclude Include="source\Engine\Memory\STL\HeapAllocator.hpp" />
+    <ClInclude Include="source\Game\MasterData\MasterRecord.hpp" />
+    <ClInclude Include="source\Game\MasterData\MasterTable.hpp" />
+    <ClInclude Include="source\Game\MasterData\MasterData.hpp" />
+    <ClInclude Include="source\Game\MasterData\MasterValueType.hpp" />
   </ItemGroup>
 </Project>

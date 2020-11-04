@@ -19,9 +19,9 @@ struct Allocation;
 class MemoryTracker
 {
 public:
-    typedef typename std::map<
-      void*, Allocation*, std::less<void*>,
-      STL::SHeapAllocator_NonTracking<std::pair<const void*, Allocation*>>> TrackMap;
+    typedef typename std::map<void*, Allocation*, std::less<void*>,
+                              STL::SHeapAllocator_NonTracking<
+                                std::pair<const void*, Allocation*>>> TrackMap;
 
     static MemoryTracker& Get();
 
@@ -45,4 +45,3 @@ private:
 } // namespace NE
 
 #endif // USE_HEAP_TRACKING
-

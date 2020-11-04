@@ -40,13 +40,13 @@ struct SHeapSharedAllocator_NonTracking
     };
 
     inline SHeapSharedAllocator_NonTracking()
-    { /* DO_NOTHING */
+    {/* DO_NOTHING */
     }
 
     template <typename U>
     inline SHeapSharedAllocator_NonTracking(
       const SHeapSharedAllocator_NonTracking<U>&)
-    { /* DO_NOTHING */
+    {/* DO_NOTHING */
     }
 
     inline T* allocate(size_t count)
@@ -75,13 +75,12 @@ inline bool operator!=(const SHeapSharedAllocator_NonTracking<T>&,
     return false;
 }
 
-
 //=============================================================================
 // 追跡無しのアロケータ
 //=============================================================================
 template <typename T>
 struct SHeapAllocator_NonTracking
-    : public SHeapAllocatorBase_NonTracking<alignof(T)>
+  : public SHeapAllocatorBase_NonTracking<alignof(T)>
 {
     using super = SHeapAllocatorBase_NonTracking<alignof(T)>;
     using value_type = T;
@@ -93,12 +92,12 @@ struct SHeapAllocator_NonTracking
     };
 
     inline SHeapAllocator_NonTracking()
-    { /* DO_NOTHING */
+    {/* DO_NOTHING */
     }
 
     template <typename U>
     inline SHeapAllocator_NonTracking(const SHeapAllocator_NonTracking<U>&)
-    { /* DO_NOTHING */
+    {/* DO_NOTHING */
     }
 
     inline T* allocate(size_t count)
@@ -114,14 +113,14 @@ struct SHeapAllocator_NonTracking
 
 template <typename T, typename U>
 inline bool operator==(const SHeapAllocator_NonTracking<T>&,
-    const SHeapAllocator_NonTracking<U>&)
+                       const SHeapAllocator_NonTracking<U>&)
 {
     return true;
 }
 
 template <typename T, typename U>
 inline bool operator!=(const SHeapAllocator_NonTracking<T>&,
-    const SHeapAllocator_NonTracking<U>&)
+                       const SHeapAllocator_NonTracking<U>&)
 {
     return false;
 }
