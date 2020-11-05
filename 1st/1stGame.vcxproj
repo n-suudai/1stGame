@@ -170,6 +170,7 @@
     <ClCompile Include="source\Game\Entities.cpp" />
     <ClCompile Include="source\Game\MasterData\MasterTable.cpp" />
     <ClCompile Include="source\Game\MasterData\MasterRecord.cpp" />
+    <ClCompile Include="source\Game\MasterData\MasterValueType.cpp" />
     <ClCompile Include="source\Game\MasterData\Parser\MasterParser_CSV.cpp" />
     <ClCompile Include="source\main.cpp">
       <SubType>

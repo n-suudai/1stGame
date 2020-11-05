@@ -17,25 +17,6 @@ void GetStringList(const NE::String& text, NE::String::value_type delimiter,
     }
 }
 
-MasterValueType GetValueType(const NE::String& typeText)
-{
-    static const char* s_pValueTypeTexts
-      [static_cast<NE::S32>(MasterValueType::Num)] = {
-        "S8",  "S16", "S32",   "S64",    "U8",     "U16",
-        "U32", "U64", "Float", "Double", "String", };
-
-    for (NE::S32 type = static_cast<NE::S32>(MasterValueType::S8);
-         type < static_cast<NE::S32>(MasterValueType::Num); type++)
-    {
-        if (typeText == s_pValueTypeTexts[type])
-        {
-            return static_cast<MasterValueType>(type);
-        }
-    }
-
-    return MasterValueType::ErrorType;
-}
-
 NE::SizeT MakeColumnDefineList(const NE::String& line1, const NE::String& line2,
                                MasterTable::ColumnDefineList& columnDefineList)
 {
@@ -73,9 +54,9 @@ NE::SizeT MakeColumnDefineList(const NE::String& line1, const NE::String& line2,
         MasterTable::ValueTypeAndOffset& typeAndOffset =
           columnDefineList[columnNames[i]];
 
-        typeAndOffset.type = GetValueType(columnTypes[i]);
+        typeAndOffset.type = MasterValueType::FromString(columnTypes[i]);
 
-        if (typeAndOffset.type == MasterValueType::ErrorType)
+        if (!typeAndOffset.type.Isvalid())
         {
             result = false;
             break;
@@ -83,7 +64,7 @@ NE::SizeT MakeColumnDefineList(const NE::String& line1, const NE::String& line2,
 
         typeAndOffset.offset = currentOffset;
 
-        currentOffset += GetValueSize(typeAndOffset.type);
+        currentOffset += typeAndOffset.type.GetSize();
     }
 
     if (!result)
@@ -93,53 +74,6 @@ NE::SizeT MakeColumnDefineList(const NE::String& line1, const NE::String& line2,
     }
 
     return currentOffset;
-}
-
-template <class T>
-T ToValue(const NE::String& valueStr, T notFound = T())
-{
-    if (valueStr == "")
-    {
-        return notFound;
-    }
-
-    NE::IStringStream iss;
-
-    iss.str(valueStr);
-
-    T value;
-
-    iss >> value;
-
-    return value;
-}
-
-template <typename T>
-NE::U8* WriteValue(NE::U8* pBlock, const NE::String& valueStr)
-{
-    T value = ToValue<T>(valueStr, T(0));
-
-    T* p = reinterpret_cast<T*>(pBlock);
-
-    (*p) = value;
-
-    return pBlock + sizeof(T);
-}
-
-template <>
-NE::U8* WriteValue<NE::String>(NE::U8* pBlock, const NE::String& valueStr)
-{
-    NE::SizeT length = strlen(valueStr.c_str());
-
-    void* pMem = NE_MEM_ALLOC(length + 1);
-
-    memcpy_s(pMem, length + 1, valueStr.c_str(), length);
-
-    NE::U64& addr = (*reinterpret_cast<NE::U64*>(pBlock));
-
-    addr = reinterpret_cast<NE::U64>(pMem);
-
-    return pBlock + sizeof(NE::U64);
 }
 
 MasterParser_CSV::MasterParser_CSV()
@@ -210,51 +144,8 @@ bool MasterParser_CSV::Parse(const char* pFilename, MasterTable* pOwner)
         NE::SizeT columnIndex = 0;
         for (auto column : columnDefines)
         {
-
-            switch (column.second.type)
-            {
-                case MasterValueType::S8:
-                case MasterValueType::S16:
-                case MasterValueType::S32:
-                    pCurrentBlock =
-                      WriteValue<NE::S32>(pCurrentBlock, values[columnIndex]);
-                    break;
-
-                case MasterValueType::U8:
-                case MasterValueType::U16:
-                case MasterValueType::U32:
-                    pCurrentBlock =
-                      WriteValue<NE::U32>(pCurrentBlock, values[columnIndex]);
-                    break;
-
-                case MasterValueType::S64:
-                    pCurrentBlock =
-                      WriteValue<NE::S64>(pCurrentBlock, values[columnIndex]);
-                    break;
-
-                case MasterValueType::U64:
-                    pCurrentBlock =
-                      WriteValue<NE::U64>(pCurrentBlock, values[columnIndex]);
-                    break;
-
-                case MasterValueType::Float:
-                    pCurrentBlock =
-                      WriteValue<NE::Float>(pCurrentBlock, values[columnIndex]);
-                    break;
-
-                case MasterValueType::Double:
-                    pCurrentBlock = WriteValue<NE::Double>(pCurrentBlock,
-                                                           values[columnIndex]);
-                    break;
-
-                case MasterValueType::String:
-                    pCurrentBlock = WriteValue<NE::String>(pCurrentBlock,
-                                                           values[columnIndex]);
-                    break;
-
-                default:
-                    break;
-            }
+            pCurrentBlock = column.second.type.WriteMemoryBlock(
+              pCurrentBlock, values[columnIndex]);
             columnIndex++;
         }
     }
@@ -284,15 +175,7 @@ bool MasterParser_CSV::Free(MasterTable* pOwner)
 
         for (auto& it : columnDefines)
         {
-            if (it.second.type == MasterValueType::String)
-            {
-                NE::U64& addr =
-                  (*reinterpret_cast<NE::U64*>(pRecordTop + it.second.offset));
-
-                void* pMem = reinterpret_cast<void*>(addr);
-
-                NE_MEM_FREE(pMem);
-            }
+            it.second.type.FreeMemoryBlock(pRecordTop + it.second.offset);
         }
     }
 

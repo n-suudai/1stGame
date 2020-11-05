@@ -100,9 +100,5 @@ int main()
 
     system("pause");
 
-    int* p = new int;
-
-    delete p;
-
     return 0;
 }

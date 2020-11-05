@@ -105,26 +105,6 @@ void MasterTable::ForEach(const RecordAccessor& accessor) const
     }
 }
 
-template <typename AddressType, typename Type>
-static void GetIntegerString(NE::U8* addr, NE::StringStream& ss)
-{
-    Type value = static_cast<Type>(*reinterpret_cast<AddressType*>(addr));
-    ss << value;
-}
-
-template <typename Type>
-static void GetFloatingPointString(NE::U8* addr, NE::StringStream& ss)
-{
-    Type value = (*reinterpret_cast<Type*>(addr));
-    ss << value;
-}
-
-static void GetStringString(NE::U8* addr, NE::StringStream& ss)
-{
-    NE::U64 stringAddr = (*reinterpret_cast<NE::U64*>(addr));
-    ss << NE::String(reinterpret_cast<const char*>(stringAddr));
-}
-
 void MasterTable::DebugPrint(bool columnNames)
 {
 
@@ -148,52 +128,7 @@ void MasterTable::DebugPrint(bool columnNames)
         {
             NE::U8* addr = GetColumnAddr(it.second.offset, record);
 
-            switch (it.second.type)
-            {
-                case MasterValueType::S8:
-                    GetIntegerString<NE::S32, NE::S8>(addr, ss);
-                    break;
-
-                case MasterValueType::S16:
-                    GetIntegerString<NE::S32, NE::S16>(addr, ss);
-                    break;
-
-                case MasterValueType::S32:
-                    GetIntegerString<NE::S32, NE::S32>(addr, ss);
-                    break;
-
-                case MasterValueType::S64:
-                    GetIntegerString<NE::S64, NE::S64>(addr, ss);
-                    break;
-
-                case MasterValueType::U8:
-                    GetIntegerString<NE::U32, NE::U8>(addr, ss);
-                    break;
-
-                case MasterValueType::U16:
-                    GetIntegerString<NE::U32, NE::U16>(addr, ss);
-                    break;
-
-                case MasterValueType::U32:
-                    GetIntegerString<NE::U32, NE::U32>(addr, ss);
-                    break;
-
-                case MasterValueType::U64:
-                    GetIntegerString<NE::U64, NE::U64>(addr, ss);
-                    break;
-
-                case MasterValueType::Float:
-                    GetFloatingPointString<NE::Float>(addr, ss);
-                    break;
-
-                case MasterValueType::Double:
-                    GetFloatingPointString<NE::Double>(addr, ss);
-                    break;
-
-                case MasterValueType::String:
-                    GetStringString(addr, ss);
-                    break;
-            }
+            it.second.type.GetValueString(addr, ss);
 
             ss << "\t";
         }

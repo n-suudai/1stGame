@@ -14,6 +14,7 @@
     <ClCompile Include="source\Engine\Memory\STL\HeapMemory.cpp" />
     <ClCompile Include="source\Game\MasterData\MasterRecord.cpp" />
     <ClCompile Include="source\Game\MasterData\MasterTable.cpp" />
+    <ClCompile Include="source\Game\MasterData\MasterValueType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Engine\Memory\Policy\NedAllocatePolicy.hpp" />
