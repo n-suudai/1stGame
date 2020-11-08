@@ -1,8 +1,9 @@
 ﻿#pragma once
 
 #include "../../Engine/STL.hpp"
+#include "../Entities.hpp"
 
-class MasterValueType
+class MasterValueType : public MasterEntity
 {
 public:
     enum class Type

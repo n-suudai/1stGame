@@ -15,6 +15,7 @@
     <ClCompile Include="source\Game\MasterData\MasterRecord.cpp" />
     <ClCompile Include="source\Game\MasterData\MasterTable.cpp" />
     <ClCompile Include="source\Game\MasterData\MasterValueType.cpp" />
+    <ClCompile Include="source\Engine\Logging\Logging.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Engine\Memory\Policy\NedAllocatePolicy.hpp" />
@@ -46,5 +47,6 @@
     <ClInclude Include="source\Game\MasterData\MasterTable.hpp" />
     <ClInclude Include="source\Game\MasterData\MasterData.hpp" />
     <ClInclude Include="source\Game\MasterData\MasterValueType.hpp" />
+    <ClInclude Include="source\Engine\Entity.hpp" />
   </ItemGroup>
 </Project>

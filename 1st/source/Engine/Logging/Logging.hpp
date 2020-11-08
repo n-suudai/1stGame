@@ -1,41 +1,58 @@
 ﻿#pragma once
 
-#include "../Types.hpp"
 #include "../STL.hpp"
-#include "../Memory/MemoryManager.hpp"
+#include "../Entity.hpp"
 #include <functional>
 
 namespace NE
 {
 namespace Log
 {
-enum class Level
-{
-    Verbose,
-    Debug,
-    Warning,
-    Error,
-    Assert,
-    Num
-};
+DEFINE_ENTITY_CLASS(LoggingEntity);
 
-class Logger
+class Level : public LoggingEntity
 {
-    DECLARE_HEAP(Logger);
+public:
+    enum class Type
+    {
+        Verbose,
+        Debug,
+        Warning,
+        Error,
+        Assert,
+        Num
+    };
 
 public:
+    Level();
+
+    explicit Level(Type type);
+
+    ~Level() = default;
+
+    NE::String ToString() const;
+
+    static Level FromString(const NE::String& str);
+
+private:
+    Type m_type;
+};
+
+class Logger : public LoggingEntity
+{
+public:
     Logger();
+
+    explicit Logger(const Level& level);
 
     ~Logger() = default;
 
     void Print(const NE::String& str) const;
 
-    NE::OStringStream& GetStream();
-
-    void FlushStream();
+    void ChangeLevel(const Level& level);
 
 protected:
-    NE::OStringStream m_stream;
+    Level m_level;
 };
 
 } // namespace Log

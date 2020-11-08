@@ -25,16 +25,16 @@ public:
 
     static MemoryTracker& Get();
 
-    MemoryTracker();
-
-    ~MemoryTracker();
-
     Allocation* RecordAllocation(void* pBlock, SizeT bytes, const char* file,
                                  S32 line, const char* function, Heap* pHeap);
 
     void RecordDeallocation(void* pBlock, Heap* pHeap);
 
     SizeT GetAllocationBookmark() const;
+
+private:
+    MemoryTracker();
+    ~MemoryTracker();
 
 private:
     std::recursive_mutex m_protection;

@@ -2,6 +2,7 @@
 #include "Character.hpp"
 #include "GameDebug.hpp"
 #include "MasterData/MasterData.hpp"
+#include "../Engine/Logging/Logging.hpp"
 
 Game::Game(const char* title) : m_title(title)
 {
@@ -9,6 +10,8 @@ Game::Game(const char* title) : m_title(title)
 
     NE::SharedPtr<IMasterParser> parser = NE::MakeShared<MasterParser_CSV>();
     m_masterTable = NE::MakeUnique<MasterTable>("Character.table", parser);
+
+    m_logger = NE::MakeUnique<NE::Log::Logger>();
 }
 
 Game::~Game()
@@ -26,6 +29,8 @@ void Game::Run()
 
 bool Game::Loop()
 {
+    m_logger->Print("HELLO!!");
+
     printf_s("%s\n", m_title.c_str());
 
     int code = 0;

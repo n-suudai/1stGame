@@ -164,6 +164,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Engine\Logging\Logging.cpp" />
     <ClCompile Include="source\Engine\Memory\STL\HeapMemory.cpp" />
     <ClCompile Include="source\Game\Game.cpp" />
     <ClCompile Include="source\Game\GameDebug.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="source\Engine\Memory\Policy\NedPoolingAllocatePolicy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Engine\Entity.hpp" />
     <ClInclude Include="source\Engine\Logging\Logging.hpp" />
     <ClInclude Include="source\Engine\Memory\AlignedAllocator.hpp" />
     <ClInclude Include="source\Engine\Memory\AllocateConfig.hpp" />
