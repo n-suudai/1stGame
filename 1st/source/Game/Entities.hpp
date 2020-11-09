@@ -8,5 +8,5 @@ DEFINE_ENTITY_CLASS(GameEntity);
 // マスターデータ関連
 DEFINE_ENTITY_CLASS(MasterEntity);
 
-// ファイル関連
-DEFINE_ENTITY_CLASS(FileEntity);
+// プレイデータ関連
+DEFINE_ENTITY_CLASS(PlayDataEntity);

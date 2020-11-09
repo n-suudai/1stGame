@@ -1,69 +1,126 @@
 ﻿#pragma once
 
-#include "Entities.hpp"
+#include "Utility.hpp"
 #include "../Engine/STL.hpp"
 
-template <typename T>
-class IStatusValue : public GameEntity
+
+// HitPoint
+class HitPoint : public PlayDataEntity
 {
 public:
-    typedef T ValueType;
+    typedef NE::U64 ValueType;
+    typedef Range<ValueType> RangeType;
 
-    virtual ~IStatusValue() = default;
-
-    virtual void Initialize(const ValueType& value) = 0;
-
-    virtual const ValueType& GetValue() const = 0;
-};
-
-template <typename T>
-class StatusValue_Basic : public IStatusValue<T>
-{
 public:
-    typedef typename IStatusValue<T>::ValueType ValueType;
+    HitPoint();
 
-    StatusValue_Basic() : m_value((ValueType)0)
+    HitPoint(const Range<NE::U64>& range);
+
+    inline ValueType Value() const { return m_value; }
+
+    inline ValueType Max() const { return m_range.Max(); }
+
+    inline ValueType Min() const { return m_range.Min(); }
+
+    bool IsAlive() const;
+
+    bool IsDead() const;
+
+    void Damage(ValueType damage);
+
+    void Recovery(ValueType recovery);
+
+    void LevelUp(ValueType increase);
+     
+    // シリアライズ可能
+    template<typename Archive>
+    inline void serialize(Archive& archive)
     {
-    }
-
-    virtual ~StatusValue_Basic() = default;
-
-    virtual void Initialize(const ValueType& value) override
-    {
-        m_value = value;
-    }
-
-    virtual const ValueType& GetValue() const override
-    {
-        return m_value;
-    }
-
-protected:
-    ValueType m_value;
-};
-
-class Status : public GameEntity
-{
-public:
-    Status()
-    {
-    }
-    virtual ~Status()
-    {
+        archive(cereal::make_nvp("Value", m_value), cereal::make_nvp("Range", m_range));
     }
 
 private:
-    NE::UniquePtr<IStatusValue<NE::U64>> m_hitPoint;
+    ValueType m_value;
+    RangeType m_range;
 };
 
+
+// Attack
+class Attack : public GameEntity
+{
+public:
+    typedef NE::U64 ValueType;
+
+public:
+    Attack();
+
+    explicit Attack(ValueType attack);
+
+    inline ValueType Value() const { return m_value; }
+
+private:
+    ValueType m_value;
+};
+
+
+// Status
+class Status : public PlayDataEntity
+{
+public:
+    Status() = default;
+
+    bool IsAlive() const;
+
+    bool IsDead() const;
+
+    void Hit(const Attack& attack);
+
+    void LevelUp();
+
+    template<typename Func>
+    inline void Show(Func func)
+    {
+        func(m_hitPoint);
+    }
+
+    // シリアライズ可能
+    template<typename Archive>
+    inline void serialize(Archive& archive)
+    {
+        archive(cereal::make_nvp("HitPoint", m_hitPoint));
+    }
+
+private:
+    HitPoint m_hitPoint;
+};
+
+
+// Character
 class Character : public GameEntity
 {
 public:
-    Character()
+    Character() = default;
+    ~Character() = default;
+
+    bool IsAlive() const;
+
+    bool IsDead() const;
+
+    void HitTest(const Attack& attack);
+
+    void LevelUp();
+
+    template<typename Func>
+    inline void ShowStatus(Func func)
     {
+        m_status.Show(func);
     }
-    virtual ~Character()
+
+    // シリアライズ可能
+    template<typename Archive>
+    inline void serialize(Archive& archive)
     {
+        archive(cereal::make_nvp("Status", m_status));
     }
 
 private:
