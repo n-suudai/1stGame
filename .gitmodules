@@ -1,0 +1,3 @@
+[submodule "1st/third_party/cereal"]
+	path = 1st/third_party/cereal
+	url = https://github.com/USCiLab/cereal.git
