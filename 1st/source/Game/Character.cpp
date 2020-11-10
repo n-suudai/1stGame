@@ -1,10 +1,7 @@
 ﻿#include "Character.hpp"
 
-
 // HitPoint
-HitPoint::HitPoint()
-    : m_value()
-    , m_range()
+HitPoint::HitPoint() : m_value(), m_range()
 {
     m_value = m_range.Max(); // 最大値で初期化
 }
@@ -12,7 +9,8 @@ HitPoint::HitPoint()
 HitPoint::HitPoint(const Range<NE::U64>& range)
     : m_value(range.Max()) // 最大値で初期化
     , m_range(range)
-{}
+{
+}
 
 bool HitPoint::IsAlive() const
 {
@@ -38,19 +36,17 @@ void HitPoint::Recovery(ValueType recovery)
 void HitPoint::LevelUp(ValueType increase)
 {
     m_range = RangeType(m_range.Min(), m_range.Max() + increase); // 最大値増加
-    m_value = m_range.Max(); // 回復
+    m_value = m_range.Max();                                      // 回復
 }
 
-
 // Attack
-Attack::Attack()
-    : Attack(ValueType(0))
-{}
+Attack::Attack() : Attack(ValueType(0))
+{
+}
 
-Attack::Attack(ValueType attack)
-    : m_value(attack)
-{}
-
+Attack::Attack(ValueType attack) : m_value(attack)
+{
+}
 
 // Status
 void Status::Hit(const Attack& attack)
@@ -72,7 +68,6 @@ void Status::LevelUp()
 {
     m_hitPoint.LevelUp(10);
 }
-
 
 // Character
 bool Character::IsAlive() const

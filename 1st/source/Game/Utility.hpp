@@ -4,14 +4,14 @@
 #include "Entities.hpp"
 #include <cmath>
 
-template<typename T>
+template <typename T>
 inline T Clamp(T x, T low, T high)
 {
     assert(low <= high);
     return std::min(std::max(x, low), high);
 }
 
-template<typename T>
+template <typename T>
 inline T Wrap(T x, T low, T high)
 {
     assert(low < high);
@@ -20,7 +20,7 @@ inline T Wrap(T x, T low, T high)
 }
 
 // Float特殊化
-template<>
+template <>
 inline NE::Float Wrap<NE::Float>(NE::Float x, NE::Float low, NE::Float high)
 {
     assert(low < high);
@@ -29,8 +29,9 @@ inline NE::Float Wrap<NE::Float>(NE::Float x, NE::Float low, NE::Float high)
 }
 
 // Double特殊化
-template<>
-inline NE::Double Wrap<NE::Double>(NE::Double x, NE::Double low, NE::Double high)
+template <>
+inline NE::Double Wrap<NE::Double>(NE::Double x, NE::Double low,
+                                   NE::Double high)
 {
     assert(low < high);
     const NE::Double n = std::fmod(x - low, high - low);
@@ -38,19 +39,15 @@ inline NE::Double Wrap<NE::Double>(NE::Double x, NE::Double low, NE::Double high
 }
 
 // Range
-template<typename T>
+template <typename T>
 class Range : public PlayDataEntity
 {
 public:
-    inline Range()
-        : Range(T(0), T(1))
+    inline Range() : Range(T(0), T(1))
     {
-
     }
 
-    inline Range(T min, T max)
-        : m_min(min)
-        , m_max(max)
+    inline Range(T min, T max) : m_min(min), m_max(max)
     {
         assert(min <= max);
     }
@@ -70,12 +67,18 @@ public:
         return ::Clamp(x, m_min, m_max);
     }
 
-    inline T Min() const { return m_min; }
+    inline T Min() const
+    {
+        return m_min;
+    }
 
-    inline T Max() const { return m_max; }
+    inline T Max() const
+    {
+        return m_max;
+    }
 
     // シリアライズ可能
-    template<typename Archive>
+    template <typename Archive>
     inline void serialize(Archive& archive)
     {
         archive(cereal::make_nvp("Min", m_min), cereal::make_nvp("Max", m_max));
@@ -85,4 +88,3 @@ private:
     T m_min;
     T m_max;
 };
-

@@ -61,11 +61,12 @@ bool Game::Loop()
     }
     else if (code == 5)
     {
-        m_character->ShowStatus(
-            [](const HitPoint& hitPoint) {
-                printf_s("-----[Status]-----\n");
-                printf_s("HitPoint : %I64d / %I64d\n", hitPoint.Value(), hitPoint.Max());
-            });
+        m_character->ShowStatus([](const HitPoint& hitPoint)
+        {
+            printf_s("-----[Status]-----\n");
+            printf_s("HitPoint : %I64d / %I64d\n", hitPoint.Value(),
+                     hitPoint.Max());
+        });
     }
     else if (code == 6)
     {
